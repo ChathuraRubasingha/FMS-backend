@@ -2,9 +2,14 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const mysql = require('mysql')
 const Connection = require('mysql/lib/Connection')
+const cors = require("cors");
+const res = require('express/lib/response');
+const { DEC8_BIN } = require('mysql/lib/protocol/constants/charsets');
 
 
 const app = express()
+app.use(cors());
+app.use(express.json());
 const port = process.env.PORT || 5000
 
 app.use(bodyParser.urlencoded({ extended: false}))
@@ -12,25 +17,41 @@ app.use(bodyParser.urlencoded({ extended: false}))
 app.use(bodyParser.json())
 
 //MySql 
-const pool = mysql.createPool({
+const db = mysql.createConnection({
     connectionLimit : 10,
     host            : 'localhost',
     user            : 'root',
     password        : '',
     database        : 'smsl_fleet_sqm'
 })
+//add data to database
+app.post('/adddriver', (req, res) => {
+    console.log(req.body)
+    const callingName = req.body.callingName
+    const fullName = req.body.fullName
+    const location = req.body.location
+    const nic = req.body.nic
+    const status = req.body.status
+    const mobile = req.body.mobile
+    const address = req.body.address
+    const image = req.body.image
+
+    db.query('INSERT INTO ma_driver (Full_Name, Complete_Name, Location_ID, NIC, Status, Mobile, Private_Address, Driver_Image) VALUES(?,?,?,?,?,?,?,?)',
+     [callingName, fullName, location, nic, status, mobile, address, image],
+     (err, result) => {
+         if(err){
+             console.log(err)
+         } else{
+             res.send("Success");
+         }
+     }
+    );
+})
 
 // get data from database
 
-app.get('', (req, res)=>{
-    pool.getConnection((err, Connection)=>{
-        if(err) throw err
-        console.log(`Connected as id ${Connection.threadId}`)
-        //query
-
-        Connection.query('SELECT ma_vehicle_category.Category_Name, COUNT(ma_vehicle_registry.Vehicle_No) as Total_vehicle, COUNT(accident.Accident_ID)  as Accident_vehicle FROM ma_vehicle_category INNER JOIN ma_vehicle_registry ON ma_vehicle_category.Vehicle_Category_ID = ma_vehicle_registry.Vehicle_Category_ID LEFT JOIN accident ON ma_vehicle_registry.Vehicle_No = accident.Vehicle_No GROUP BY ma_vehicle_category.Vehicle_Category_ID, ma_vehicle_category.Category_Name',(err, rows)=>{
-            Connection.release()
-
+app.get('/driver', (req, res)=>{
+        db.query('SELECT Driver_ID, Full_Name, NIC, Mobile FROM ma_driver',(err, rows)=>{
             if(!err){
                 res.send(rows)
             }else{
@@ -38,6 +59,19 @@ app.get('', (req, res)=>{
             }
         })
 
+    })
+
+
+//delete data
+app.delete('/deletedriver/:id', (req, res) =>{
+    const id = req.params.id
+    console.log(id)
+    db.query('DELETE FROM ma_driver WHERE Driver_ID = ?', id, (err, result) => {
+        if(err) {
+            console.log(err)
+        }else{
+            res.send(result);
+        }
     })
 })
 

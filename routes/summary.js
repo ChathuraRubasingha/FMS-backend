@@ -9,4 +9,6 @@ app.use((req,res,next)=>{
 
 router.get('/', summary.table1)
 
+
+
 module.exports = router
