@@ -1,18 +1,57 @@
-exports.table1 = (req, res) => {
-    pool.getConnection((err, Connection) => {
-        if (err) throw err
-        console.log(`Connected as id ${Connection.threadId}`)
-        //query
+const pool = require("../db");
+const express = require('express'),
+router = express.Router()
 
-        Connection.query('SELECT ma_vehicle_category.Category_Name, COUNT(ma_vehicle_registry.Vehicle_No) as Total_vehicle, COUNT(accident.Accident_ID)  as Accident_vehicle FROM ma_vehicle_category INNER JOIN ma_vehicle_registry ON ma_vehicle_category.Vehicle_Category_ID = ma_vehicle_registry.Vehicle_Category_ID LEFT JOIN accident ON ma_vehicle_registry.Vehicle_No = accident.Vehicle_No GROUP BY ma_vehicle_category.Vehicle_Category_ID, ma_vehicle_category.Category_Name', (err, rows) => {
-            Connection.release()
+const Adddriver = (req, res) => {
+    console.log(req.body)
+    const callingName = req.body.callingName
+    const fullName = req.body.fullName
+    const location = req.body.location
+    const nic = req.body.nic
+    const status = req.body.status
+    const mobile = req.body.mobile
+    const address = req.body.address
+    const image = req.body.image
 
-            if (!err) {
+    pool.query('INSERT INTO ma_driver (Full_Name, Complete_Name, Location_ID, NIC, Status, Mobile, Private_Address, Driver_Image) VALUES(?,?,?,?,?,?,?,?)',
+     [callingName, fullName, location, nic, status, mobile, address, image],
+     (err, result) => {
+         if(err){
+             console.log(err)
+         } else{
+             res.send("Success");
+         }
+     }
+    );
+}
+
+// get data from database
+const GetDrivers=(req, res)=>{
+        pool.query('SELECT Driver_ID, Full_Name, NIC, Mobile FROM ma_driver',(err, rows)=>{
+            if(!err){
                 res.send(rows)
-            } else {
+            }else{
                 console.log(err)
             }
         })
 
+    }
+
+//delete data
+const DeleteById= (req, res) =>{
+    const id = req.params.id
+    console.log(id)
+    pool.query('DELETE FROM ma_driver WHERE Driver_ID = ?', id, (err, result) => {
+        if(err) {
+            console.log(err)
+        }else{
+            res.send(result);
+        }
     })
 }
+
+//get data by id
+exports.Adddriver=Adddriver
+exports.DeleteById=DeleteById
+exports.GetDrivers=GetDrivers
+
