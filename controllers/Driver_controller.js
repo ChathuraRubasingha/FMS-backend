@@ -50,7 +50,6 @@ const DeleteById= (req, res) =>{
     })
 }
 
-//get data by id
 exports.Adddriver=Adddriver
 exports.DeleteById=DeleteById
 exports.GetDrivers=GetDrivers
