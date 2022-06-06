@@ -4,8 +4,8 @@ const Connection = require('mysql/lib/Connection')
 const cors = require("cors");
 const res = require('express/lib/response');
 const { DEC8_BIN } = require('mysql/lib/protocol/constants/charsets');
-const routes = require("./routes/summary")
-
+const routes = require("./routes/Driver")
+const routesMaintanance =require("./routes/Maintanace")
 const app = express()
 app.use(cors());
 app.use(express.json());
@@ -15,6 +15,6 @@ app.use(bodyParser.urlencoded({ extended: false}))
 
 app.use(bodyParser.json())
 app.use("/api",routes)
-
+app.use("/api",routesMaintanance)
 //Listern on enviroment port or 5000
 app.listen(port, () => console.log(`Listern on port ${port}`))
