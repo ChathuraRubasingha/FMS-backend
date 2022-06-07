@@ -15,11 +15,6 @@ router.get(
   Registory.GetLocationAssignedVehicles
 );
 
-router.get(
-  "/getlocationunassignedvehicles",
-  Registory.GetLocationUnAssignedVehicles
-);
-
 router.get("/getdriverassignedvehicles", Registory.GetDriverAssignedVehicles);
 router.get(
   "/getdriverunassignedvehicles",
@@ -27,9 +22,13 @@ router.get(
 );
 
 router.get("/gettransfersummary", Registory.GetTransferSummary);
-module.exports = router;
 
 router.get("/getnottransfersummary", Registory.GetNotTransferSummary);
-module.exports = router;
 
 router.post("/registervehicle", Registory.RegisterVehicle);
+
+router.delete("/deletevehicle/:id", Registory.DeleteVehicle);
+router.delete("/deleteassignedlocation/:id", Registory.DeleteAssignedLocation);
+router.delete("/deletetranferedvehicle/:id", Registory.DeleteTranferedVehicle);
+router.delete("/deleteassigneddriver/:id", Registory.DeleteAssignedDriver);
+module.exports = router;

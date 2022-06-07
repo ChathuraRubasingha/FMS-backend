@@ -29,18 +29,21 @@ const GetLocationUnAssignedVehicles = (req, res) => {
 };
 
 const GetLocationAssignedVehicles = (req, res) => {
-  pool.query("", (err, rows) => {
-    if (!err) {
-      res.send(rows);
-    } else {
-      console.log(err);
+  pool.query(
+    "SELECT ma_location.Location_Name,  ma_vehicle_registry.Vehicle_No,  ma_vehicle_category.Category_Name,  vehicle_transfer.From_Date, vehicle_transfer.To_Date FROM vehicle_location INNER JOIN ma_vehicle_registry ON vehicle_location.Vehicle_No = ma_vehicle_registry.Vehicle_No INNER JOIN ma_location ON vehicle_location.Current_Location_ID = ma_location.Location_ID INNER JOIN ma_vehicle_category ON ma_vehicle_registry.Vehicle_Category_ID = ma_vehicle_category.Vehicle_Category_ID INNER JOIN vehicle_transfer ON vehicle_location.Vehicle_No = vehicle_transfer.Vehicle_No",
+    (err, rows) => {
+      if (!err) {
+        res.send(rows);
+      } else {
+        console.log(err);
+      }
     }
-  });
+  );
 };
 
 const GetDriverAssignedVehicles = (req, res) => {
   pool.query(
-    "SELECT ma_driver.Full_Name,ma_vehicle_registry.Vehicle_No, ma_vehicle_category.Category_Name, ma_location.Location_Name, vehicle_driver.From_Date,vehicle_driver.To_Date FROM ma_driver INNER JOIN ma_vehicle_registry ON ma_driver.Driver_ID = ma_vehicle_registry.Driver_ID INNER JOIN ma_vehicle_category ON ma_vehicle_registry.Vehicle_Category_ID = ma_vehicle_category.Vehicle_Category_ID INNER JOIN ma_location ON ma_vehicle_registry.Location_ID = ma_location.Location_ID INNER JOIN vehicle_driver ON ma_vehicle_registry.Vehicle_No = vehicle_driver.Vehicle_No",
+    "SELECT ma_driver.Full_Name,  vehicle_driver.Vehicle_No,  ma_vehicle_category.Category_Name, ma_location.Location_Name,  vehicle_location.From_Date,  vehicle_location.To_Date FROM vehicle_driver INNER JOIN ma_driver ON vehicle_driver.Driver_ID = ma_driver.Driver_ID INNER JOIN vehicle_location ON ma_driver.Driver_ID = vehicle_location.Driver_ID INNER JOIN ma_location ON ma_driver.Location_ID = ma_location.Location_ID INNER JOIN ma_vehicle_registry ON vehicle_location.Vehicle_No = ma_vehicle_registry.Vehicle_No INNER JOIN ma_vehicle_category ON ma_vehicle_registry.Vehicle_Category_ID = ma_vehicle_category.Vehicle_Category_ID",
     (err, rows) => {
       if (!err) {
         res.send(rows);
@@ -137,6 +140,66 @@ const RegisterVehicle = (req, res) => {
   );
 };
 
+const DeleteTranferedVehicle = (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  pool.query(
+    "DELETE FROM vehicle_transfer WHERE From_Location_ID = ?",
+    id,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+};
+
+const DeleteVehicle = (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  pool.query(
+    "DELETE FROM ma_vehicle_registry WHERE Vehicle_No = ?",
+    id,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+};
+
+const DeleteAssignedDriver = (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  pool.query("DELETE FROM ma_driver WHERE Driver_ID = ?", id, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+};
+
+const DeleteAssignedLocation = (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  pool.query(
+    "DELETE FROM ma_location WHERE Location_Name = ?",
+    id,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+};
+
 exports.GetRegistedVehicles = GetRegistedVehicles;
 exports.GetLocationUnAssignedVehicles = GetLocationUnAssignedVehicles;
 exports.GetLocationAssignedVehicles = GetLocationAssignedVehicles;
@@ -144,5 +207,9 @@ exports.GetDriverAssignedVehicles = GetDriverAssignedVehicles;
 exports.GetDriverUnAssignedVehicles = GetDriverUnAssignedVehicles;
 exports.GetTransferSummary = GetTransferSummary;
 exports.GetNotTransferSummary = GetNotTransferSummary;
-
 exports.RegisterVehicle = RegisterVehicle;
+
+exports.DeleteAssignedLocation = DeleteAssignedLocation;
+exports.DeleteTranferedVehicle = DeleteTranferedVehicle;
+exports.DeleteAssignedDriver = DeleteAssignedDriver;
+exports.DeleteVehicle = DeleteVehicle;
