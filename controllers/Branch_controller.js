@@ -8,7 +8,8 @@ const AddBranch = (req, res) => {
 	const branch = req.body.branch;
 
 	pool.query(
-		"INSERT INTO ma_location (Location_Name)VALUES(?),INSERT INTO ma_branch (Branch)VALUES(?)",
+		"INSERT INTO ma_location (Location_Name)VALUES(?)",
+		"INSERT INTO ma_branch (Branch)VALUES(?)",
 		[location, branch],
 		(err, result) => {
 			if (err) {
