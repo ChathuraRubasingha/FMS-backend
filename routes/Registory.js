@@ -31,3 +31,5 @@ module.exports = router;
 
 router.get("/getnottransfersummary", Registory.GetNotTransferSummary);
 module.exports = router;
+
+router.post("/registervehicle", Registory.RegisterVehicle);

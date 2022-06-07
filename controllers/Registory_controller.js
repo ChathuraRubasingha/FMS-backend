@@ -90,6 +90,53 @@ const GetNotTransferSummary = (req, res) => {
   );
 };
 
+const RegisterVehicle = (req, res) => {
+  console.log(req.body);
+  const VehicleNo = req.body.VehicleNo;
+  const RegistrationFee = req.body.RegistrationFee;
+  const VehicleCategoryID = req.body.VehicleCategoryID;
+  const PurchaseValue = req.body.PurchaseValue;
+  const EngineNo = req.body.EngineNo;
+  const ChassisNo = req.body.ChassisNo;
+  const DriverID = req.body.DriverID;
+  const FuelTypeID = req.body.FuelTypeID;
+  const TyreSizeID = req.body.TyreSizeID;
+  const TyreTypeID = req.body.TyreTypeID;
+  const MakeID = req.body.MakeID;
+  const ModelID = req.body.ModelID;
+  const BatteryTypeID = req.body.BatteryTypeID;
+  const VehicleStatusID = req.body.VehicleStatusID;
+  const AllocationTypeID = req.body.AllocationTypeID;
+
+  pool.query(
+    "INSERT INTO ma_vehicle_registry (Vehicle_No,Registration_Fee, Vehicle_Category_ID,Purchase_Value, Engine_No, Chassis_No,Driver_ID,Fuel_Type_ID,Tyre_Size_ID,Tyre_Type_ID,Make_ID,Model_ID,Battery_Type_ID,Vehicle_Status_ID,Allocation_Type_ID) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+    [
+      VehicleNo,
+      RegistrationFee,
+      VehicleCategoryID,
+      PurchaseValue,
+      EngineNo,
+      ChassisNo,
+      DriverID,
+      FuelTypeID,
+      TyreSizeID,
+      TyreTypeID,
+      MakeID,
+      ModelID,
+      BatteryTypeID,
+      VehicleStatusID,
+      AllocationTypeID,
+    ],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send("Success");
+      }
+    }
+  );
+};
+
 exports.GetRegistedVehicles = GetRegistedVehicles;
 exports.GetLocationUnAssignedVehicles = GetLocationUnAssignedVehicles;
 exports.GetLocationAssignedVehicles = GetLocationAssignedVehicles;
@@ -97,3 +144,5 @@ exports.GetDriverAssignedVehicles = GetDriverAssignedVehicles;
 exports.GetDriverUnAssignedVehicles = GetDriverUnAssignedVehicles;
 exports.GetTransferSummary = GetTransferSummary;
 exports.GetNotTransferSummary = GetNotTransferSummary;
+
+exports.RegisterVehicle = RegisterVehicle;
