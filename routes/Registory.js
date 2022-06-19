@@ -1,8 +1,8 @@
-const express = require('express'),
-router = express.Router()
+const express = require("express"),
+  router = express.Router();
 
-const Registory = require("../controllers/Registory_controller")
+const Registory = require("../controllers/Registory_controller");
 
-router.get('/registedVehicles', Registory.GetRegistedVehicles)
+router.get("/registedVehicles", Registory.GetRegistedVehicles);
 
-module.exports = router
+module.exports = router;
