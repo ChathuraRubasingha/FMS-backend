@@ -32,7 +32,7 @@ const Addproject = (req, res) => {
   );
 };
 
-const DeleteById = (req, res) => {
+const DeleteProject = (req, res) => {
   const id = req.params.id;
   console.log(id);
   pool.query(
@@ -48,6 +48,63 @@ const DeleteById = (req, res) => {
   );
 };
 
+const Getproject = (req, res) => {
+  const id = req.params.id;
+  pool.query(
+    "SELECT * FROM project_details WHERE project_id = ?",
+    id,
+    (err, result) => {
+      if (err) {
+        res.status(400).send(err);
+      } else {
+        res.send(result[0]);
+      }
+    }
+  );
+};
+
+const UpdateProject = (req, res) => {
+  const id = req.params.id;
+  const { project_name, start_date, progress } = req.body;
+  console.log(project_name, progress);
+
+  pool.query(
+    "UPDATE project_details SET project_name = ?, start_date = ?, progress = ? WHERE project_id = ?",
+    [project_name, start_date, progress, id],
+    (err, result) => {
+      if (err) {
+        res.status(400).send(err);
+      } else {
+        res.send({
+          msg: "User updated successfully",
+        });
+      }
+    }
+  );
+};
+
+const UpdateStatus = (req, res) => {
+  const id = req.params.id;
+  const { Approve_status } = req.body;
+  console.log(Approve_status + " " + id);
+  pool.query(
+    "UPDATE fuel_request_details SET Approve_Status= ? WHERE Fuel_Request_ID = ?",
+    [Approve_status, id],
+    (err, result) => {
+      if (err) {
+        res.status(400).send(err);
+      } else {
+        res.send({
+          msg: "User updated successfully",
+        });
+      }
+    }
+  );
+};
+
 exports.GetProjectdetails = GetProjectdetails;
 exports.Addproject = Addproject;
-exports.DeleteById = DeleteById;
+exports.DeleteProject = DeleteProject;
+exports.UpdateProject = UpdateProject;
+exports.Getproject = Getproject;
+exports.UpdateStatus = UpdateStatus;
