@@ -14,6 +14,10 @@ const routesVehicleDetail = require("./routes/VehicleDetail");
 const routesBranch = require("./routes/Branch");
 const routesRequierFuel = require("./routes/RequierFuel");
 const routesAccident = require("./routes/Accident");
+const routesLocation = require("./routes/Location");
+const routesDesignation = require("./routes/Designation");
+const routesMake = require("./routes/Make");
+const routesModal = require("./routes/Modal");
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -32,5 +36,10 @@ app.use("/api", routesVehicleDetail);
 app.use("/api", routesBranch);
 app.use("/api", routesRequierFuel);
 app.use("/api", routesAccident);
+app.use("/api", routesLocation);
+app.use("/api", routesDesignation);
+app.use("/api", routesMake);
+app.use("/api", routesModal);
+
 //Listern on enviroment port or 5000
 app.listen(port, () => console.log(`Listern on port ${port}`));
