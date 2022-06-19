@@ -8,6 +8,7 @@ const routes = require("./routes/Driver")
 const routesMaintanance =require("./routes/Maintanace")
 const routesRegisted = require('./routes/Registory')
 const userLogin = require('./routes/Userlogin')
+const Location = require('./routes/Add_Driver_Form')
 
 const app = express()
 app.use(cors());
@@ -21,5 +22,6 @@ app.use("/api",routes)
 app.use("/api",routesMaintanance)
 app.use('/api',routesRegisted)
 app.use('/api',userLogin)
+app.use('/api',Location)
 //Listern on enviroment port or 5000
 app.listen(port, () => console.log(`Listern on port ${port}`))
