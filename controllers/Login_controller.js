@@ -1,26 +1,27 @@
 const pool = require("../db");
-const express = require('express'),
-router = express.Router()
+const express = require("express");
+router = express.Router();
 
-const UserLogin = (req, res) => {
-    const username = req.body.username
-    const password = req.body.password
-    console.log(username + password);
+const Login = (req, res) => {
+  console.log(req.body);
+  const username = req.body.username;
+  const password = req.body.password;
 
-    pool.query('SELECT * FROM ma_user WHERE UserName = ? AND Password = ?',
+  pool.query(
+    "SELECT* FROM tbl_users WHERE username =? AND password =?",
     [username, password],
     (err, result) => {
-        if(err) {
-            res.send({err:err});
-        }
-        if(result.length) {
+      if (err) {
+        res.send({ err: err });
+      }
 
-            res.send(result);
-        }else{
-            res.send({message:"Wrong username/password combination"});
-        }
+      if (result.length > 0) {
+        res.send(result);
+      } else {
+        res.send({ message: "Wrong User Name Password" });
+      }
     }
-    );
-}
+  );
+};
 
-exports.UserLogin = UserLogin
+exports.Login = Login;
