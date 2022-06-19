@@ -34,7 +34,7 @@ const upload = multer({
 });
 
 router.post("/addfuel", GetFuel.Addfuel);
-router.post("/addfuelconfirm", GetFuel.Addfuelconfirm);
+router.post("/addfuelconfirm", upload.single("photo"), GetFuel.Addfuelconfirm);
 router.get("/fuelrequest", GetFuel.GetFuelrequest);
 router.get("/fueldetails", GetFuel.GetFueldetails);
 router.post("/uploadImage", upload.single("image"), GetFuel.UploadBillImage);

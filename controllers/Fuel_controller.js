@@ -41,7 +41,7 @@ const Addfuel = (req, res) => {
   const Liters = req.body.Liters;
 
   pool.query(
-    "INSERT INTO fuel_request_details(Driver_ID, Vehicle_No,Request_Date, Meter_Reading, Required_Fuel_Capacity,Reason) VALUES(?,?,?,?,?,)",
+    "INSERT INTO fuel_request_details(Driver_ID, Vehicle_No,Request_Date, Meter_Reading, Required_Fuel_Capacity) VALUES(?,?,?,?,?)",
     [driverid, vehicleid, date, odometer, Liters],
     (err, result) => {
       if (err) {
@@ -64,9 +64,14 @@ const Addfuelconfirm = (req, res) => {
   const Liters = req.body.Liters;
   const amount = req.body.amount;
 
+  var image = null;
+  if (req.file != null) {
+    image = req.file.path;
+  }
+  console.log(image);
   pool.query(
-    "INSERT INTO fuel_providing_details(add_by, Vehicle_No,Fuel_Pumped_Date,Fuel_Station, Distance_Driven, Fuel_Amount, Payable_Amount) VALUES(?,?,?,?,?,?,?)",
-    [fullName, vehicleid, date, location, odometer, Liters, amount],
+    "INSERT INTO fuel_providing_details(add_by, Vehicle_No,Fuel_Pumped_Date,Fuel_Station, Distance_Driven, Fuel_Amount, Payable_Amount,photo) VALUES(?,?,?,?,?,?,?,?)",
+    [fullName, vehicleid, date, location, odometer, Liters, amount, image],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -80,7 +85,7 @@ const Addfuelconfirm = (req, res) => {
 //rishies back end
 const GetFuelrequest = (req, res) => {
   pool.query(
-    "SELECT fuel_request_details.Vehicle_No,ma_driver.Full_Name,fuel_request_details.Driver_ID, fuel_request_details.Request_Date, fuel_request_details.Meter_Reading,fuel_request_details.Required_Fuel_Capacity,fuel_request_details.photo FROM fuel_request_details INNER JOIN ma_driver ON fuel_request_details.Driver_ID = ma_driver.Driver_ID",
+    "SELECT fuel_request_details.Vehicle_No,fuel_request_details.Fuel_Request_ID,ma_driver.Full_Name,fuel_request_details.Driver_ID, fuel_request_details.Request_Date, fuel_request_details.Meter_Reading,fuel_request_details.Required_Fuel_Capacity,fuel_request_details.Approve_Status FROM fuel_request_details INNER JOIN ma_driver ON fuel_request_details.Driver_ID = ma_driver.Driver_ID",
     (err, rows) => {
       if (!err) {
         res.send(rows);
