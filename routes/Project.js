@@ -1,15 +1,12 @@
 const express = require("express"),
   router = express.Router();
-const multer = require("multer");
-const GetProjectdetails = require("../controllers/Project_controller");
 
-const storage = multer.diskStorage({
-  destination: "./src/images",
-  filename: (req, file, cb) => {
-    return;
-  },
-});
+const GetProjectdetails = require("../controllers/Project_controller");
+const Addproject = require("../controllers/Project_controller");
+const DeleteById = require("../controllers/Project_controller");
 
 router.get("/getproject", GetProjectdetails.GetProjectdetails);
+router.post("/addproject", Addproject.Addproject);
+router.delete("/deleteproject/:id", DeleteById.DeleteById);
 
 module.exports = router;
