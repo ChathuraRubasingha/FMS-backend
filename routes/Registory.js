@@ -31,4 +31,5 @@ router.delete("/deletevehicle/:id", Registory.DeleteVehicle);
 router.delete("/deleteassignedlocation/:id", Registory.DeleteAssignedLocation);
 router.delete("/deletetranferedvehicle/:id", Registory.DeleteTranferedVehicle);
 router.delete("/deleteassigneddriver/:id", Registory.DeleteAssignedDriver);
+
 module.exports = router;
