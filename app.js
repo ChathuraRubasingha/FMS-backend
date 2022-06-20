@@ -2,12 +2,12 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const Connection = require("mysql/lib/Connection");
 const cors = require("cors");
-const res = require('express/lib/response');
-const { DEC8_BIN } = require('mysql/lib/protocol/constants/charsets');
-const routes = require("./routes/Driver")
-const routesMaintanance =require("./routes/Maintanace")
-const routesRegisted = require('./routes/Registory')
-const Location = require('./routes/Add_Driver_Form')
+const res = require("express/lib/response");
+const { DEC8_BIN } = require("mysql/lib/protocol/constants/charsets");
+const routes = require("./routes/Driver");
+const routesMaintanance = require("./routes/Maintanace");
+const routesRegisted = require("./routes/Registory");
+const Location = require("./routes/Add_Driver_Form");
 const routesManageRole = require("./routes/ManageRoles");
 const routesOdometer = require("./routes/Odometer");
 const routesManageUser = require("./routes/ManageUser");
@@ -25,6 +25,7 @@ const routesLocation = require("./routes/Location");
 const routesDesignation = require("./routes/Designation");
 const routesMake = require("./routes/Make");
 const routesModal = require("./routes/Modal");
+const routesCategory = require("./routes/Category");
 const routesLogin = require("./routes/Login");
 const routesProject = require("./routes/Project");
 
@@ -57,10 +58,11 @@ app.use("/api", routesLocation);
 app.use("/api", routesDesignation);
 app.use("/api", routesMake);
 app.use("/api", routesModal);
+app.use("/api", routesCategory);
 app.use("/api", routesLogin);
 app.use("/api", routesProject);
-app.use('/api', routesRegisted)
-app.use('/api', Location)
+app.use("/api", routesRegisted);
+app.use("/api", Location);
 
 //Listern on enviroment port or 5000
 app.listen(port, () => console.log(`Listern on port ${port}`));
