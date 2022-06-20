@@ -351,7 +351,7 @@ const UpdateTranferedsummeryByaID = (req, res) => {
     req.body;
 
   pool.query(
-    "UPDATE vehicle_transfer_new SET from_location = ?,  to_location = ?, from_date = ?,to_date = ? ,transfer_status = ? , WHERE transfer_ID = ?",
+    "UPDATE vehicle_transfer_new SET from_location = ?,  to_location = ?, from_date = ?,to_date = ? ,transfer_status = ?  WHERE transfer_ID = ?",
     [
       from_location,
       to_location,
@@ -466,6 +466,88 @@ const GetTotalIdelVehiclesCountwise = (req, res) => {
   );
 };
 
+const GetAllDrivers = (req, res) => {
+  pool.query(
+    "SELECT Driver_ID, Full_Name, NIC, Mobile, Private_Address FROM ma_driver",
+    (err, rows) => {
+      if (!err) {
+        res.send(rows);
+      } else {
+        console.log(err);
+      }
+    }
+  );
+};
+
+const GetAllCatergory = (req, res) => {
+  pool.query("SELECT * FROM `ma_vehicle_category`", (err, rows) => {
+    if (!err) {
+      res.send(rows);
+    } else {
+      console.log(err);
+    }
+  });
+};
+
+const GetAllFuel = (req, res) => {
+  pool.query("SELECT * FROM `ma_fuel_type`", (err, rows) => {
+    if (!err) {
+      res.send(rows);
+    } else {
+      console.log(err);
+    }
+  });
+};
+
+const GetAllTyreSize = (req, res) => {
+  pool.query("SELECT * FROM `ma_tyre_size`", (err, rows) => {
+    if (!err) {
+      res.send(rows);
+    } else {
+      console.log(err);
+    }
+  });
+};
+
+const GetAllTyreType = (req, res) => {
+  pool.query("SELECT * FROM `ma_tyre_type`", (err, rows) => {
+    if (!err) {
+      res.send(rows);
+    } else {
+      console.log(err);
+    }
+  });
+};
+
+const GetAllMake = (req, res) => {
+  pool.query("SELECT * FROM `ma_make`", (err, rows) => {
+    if (!err) {
+      res.send(rows);
+    } else {
+      console.log(err);
+    }
+  });
+};
+
+const GetAllModel = (req, res) => {
+  pool.query("SELECT * FROM `ma_model`", (err, rows) => {
+    if (!err) {
+      res.send(rows);
+    } else {
+      console.log(err);
+    }
+  });
+};
+
+const GetAllBatrey = (req, res) => {
+  pool.query("SELECT * FROM `ma_battery_type`", (err, rows) => {
+    if (!err) {
+      res.send(rows);
+    } else {
+      console.log(err);
+    }
+  });
+};
 exports.GetRegistedVehicles = GetRegistedVehicles;
 exports.GetLocationUnAssignedVehicles = GetLocationUnAssignedVehicles;
 exports.GetLocationAssignedVehicles = GetLocationAssignedVehicles;
@@ -504,3 +586,12 @@ exports.UpdateStatus = UpdateStatus;
 exports.UpdateTranferedsummeryByaID = UpdateTranferedsummeryByaID;
 
 exports.GetTotalIdelVehiclesCountwise = GetTotalIdelVehiclesCountwise;
+
+exports.GetAllDrivers = GetAllDrivers;
+exports.GetAllCatergory = GetAllCatergory;
+exports.GetAllFuel = GetAllFuel;
+exports.GetAllTyreSize = GetAllTyreSize;
+exports.GetAllTyreType = GetAllTyreType;
+exports.GetAllMake = GetAllMake;
+exports.GetAllModel = GetAllModel;
+exports.GetAllBatrey = GetAllBatrey;

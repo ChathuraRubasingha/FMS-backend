@@ -81,3 +81,14 @@ router.get(
   "/getTotalIdelVehiclesCountwise",
   Registory.GetTotalIdelVehiclesCountwise
 );
+
+router.get("/getAllDrivers", Registory.GetAllDrivers);
+
+router.get("/getAllCatergory", Registory.GetAllCatergory);
+router.get("/getAllFuel", Registory.GetAllFuel);
+router.get("/getAllTyreSize", Registory.GetAllTyreSize);
+router.get("/getAllTyreType", Registory.GetAllTyreType);
+router.get("/getAllMake", Registory.GetAllMake);
+router.get("/getAllModel", Registory.GetAllModel);
+
+router.get("/getAllBatrey", Registory.GetAllBatrey);
