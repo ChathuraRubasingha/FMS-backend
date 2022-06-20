@@ -36,7 +36,7 @@ const GetDrivers=(req, res)=>{
             }
         })
     }
-//delete data
+
 const GetDriver = (req, res) => {
     const id = req.params.id;
     pool.query('SELECT * FROM ma_driver WHERE Driver_ID = ?', id, (err, result) => {
@@ -74,7 +74,7 @@ const UpdateDriver = (req, res) => {
         }
     })
 }
-
+//delete data
 const DeleteById = (req, res) => {
   const id = req.params.id;
   console.log(id);
