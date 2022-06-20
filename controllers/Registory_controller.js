@@ -548,6 +548,26 @@ const GetAllBatrey = (req, res) => {
     }
   });
 };
+
+const GetVehicleStatus = (req, res) => {
+  pool.query("SELECT * FROM `ma_vehicle_status`", (err, rows) => {
+    if (!err) {
+      res.send(rows);
+    } else {
+      console.log(err);
+    }
+  });
+};
+
+const GetAllocationType = (req, res) => {
+  pool.query("SELECT * FROM `ma_allocation_type`", (err, rows) => {
+    if (!err) {
+      res.send(rows);
+    } else {
+      console.log(err);
+    }
+  });
+};
 exports.GetRegistedVehicles = GetRegistedVehicles;
 exports.GetLocationUnAssignedVehicles = GetLocationUnAssignedVehicles;
 exports.GetLocationAssignedVehicles = GetLocationAssignedVehicles;
@@ -595,3 +615,5 @@ exports.GetAllTyreType = GetAllTyreType;
 exports.GetAllMake = GetAllMake;
 exports.GetAllModel = GetAllModel;
 exports.GetAllBatrey = GetAllBatrey;
+exports.GetVehicleStatus = GetVehicleStatus;
+exports.GetAllocationType = GetAllocationType;

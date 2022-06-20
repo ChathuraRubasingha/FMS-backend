@@ -92,3 +92,7 @@ router.get("/getAllMake", Registory.GetAllMake);
 router.get("/getAllModel", Registory.GetAllModel);
 
 router.get("/getAllBatrey", Registory.GetAllBatrey);
+
+router.get("/getVehicleStatus", Registory.GetVehicleStatus);
+
+router.get("/getAllocationType", Registory.GetAllocationType);
