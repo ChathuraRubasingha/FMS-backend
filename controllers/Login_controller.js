@@ -18,7 +18,7 @@ const Login = (req, res) => {
       if (result.length > 0) {
         res.send(result);
       } else {
-        res.send({ message: "Wrong User Name Password" });
+        res.send({ message: "Wrong Username or Password" });
       }
     }
   );
