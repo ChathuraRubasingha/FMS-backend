@@ -34,6 +34,7 @@ router.delete(
   Registory.DeleteTranferedVehicle
 );
 router.delete("/deleteassigneddriver/:id", Registory.DeleteAssignedDriver);
+
 module.exports = router;
 
 router.put("/updatevehiclereg/:vehicleno", Registory.Updatevehicle);

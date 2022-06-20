@@ -27,20 +27,54 @@ const Adddriver = (req, res) => {
 };
 
 // get data from database
-const GetDrivers = (req, res) => {
-  pool.query(
-    "SELECT Driver_ID, Full_Name, NIC, Mobile FROM ma_driver",
-    (err, rows) => {
-      if (!err) {
-        res.send(rows);
-      } else {
-        console.log(err);
-      }
+const GetDrivers=(req, res)=>{
+        pool.query('SELECT Driver_ID, Full_Name, NIC, Mobile, Private_Address FROM ma_driver',(err, rows)=>{
+            if(!err){
+                res.send(rows)
+            }else{
+                console.log(err)
+            }
+        })
     }
-  );
-};
-
 //delete data
+const GetDriver = (req, res) => {
+    const id = req.params.id;
+    pool.query('SELECT * FROM ma_driver WHERE Driver_ID = ?', id, (err, result) => {
+        if(err) {
+            res.status(400).send(err)
+        }else{
+            res.send(result[0]);
+        }
+    })
+}
+
+const UpdateDriver = (req, res) => {
+    const id = req.params.id;
+    const {
+        callingName,
+        fullName,
+        location,
+        nic,
+        status,
+        mobile,
+        address,
+        image,
+    } = req.body;
+    console.log(fullName, callingName)
+
+    pool.query('UPDATE ma_driver SET Full_Name = ?, Complete_Name = ?, Location_ID = ?, NIC = ?, Status = ?, Mobile = ?, Private_Address = ?, Driver_Image = ? WHERE Driver_ID = ?',
+    [callingName, fullName, location, nic, status, mobile, address, image, id],
+    (err, result) => {
+        if(err) {
+            res.status(400).send(err)
+        }else{
+            res.send({
+                msg: 'User updated successfully'
+            });
+        }
+    })
+}
+
 const DeleteById = (req, res) => {
   const id = req.params.id;
   console.log(id);
@@ -52,7 +86,11 @@ const DeleteById = (req, res) => {
     }
   });
 };
-
+exports.Adddriver=Adddriver
+exports.DeleteById=DeleteById
+exports.GetDrivers=GetDrivers
+exports.GetDriver = GetDriver;
+exports.UpdateDriver = UpdateDriver
 exports.Adddriver = Adddriver;
 exports.DeleteById = DeleteById;
 exports.GetDrivers = GetDrivers;
