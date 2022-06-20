@@ -42,16 +42,13 @@ const GetLocationAssignedVehicles = (req, res) => {
 };
 
 const GetDriverAssignedVehicles = (req, res) => {
-  pool.query(
-    "SELECT ma_driver.Full_Name,  vehicle_driver.Vehicle_No,  ma_vehicle_category.Category_Name, ma_location.Location_Name,  vehicle_location.From_Date,  vehicle_location.To_Date FROM vehicle_driver INNER JOIN ma_driver ON vehicle_driver.Driver_ID = ma_driver.Driver_ID INNER JOIN vehicle_location ON ma_driver.Driver_ID = vehicle_location.Driver_ID INNER JOIN ma_location ON ma_driver.Location_ID = ma_location.Location_ID INNER JOIN ma_vehicle_registry ON vehicle_location.Vehicle_No = ma_vehicle_registry.Vehicle_No INNER JOIN ma_vehicle_category ON ma_vehicle_registry.Vehicle_Category_ID = ma_vehicle_category.Vehicle_Category_ID",
-    (err, rows) => {
-      if (!err) {
-        res.send(rows);
-      } else {
-        console.log(err);
-      }
+  pool.query("SELECT * FROM `driver_assigned`", (err, rows) => {
+    if (!err) {
+      res.send(rows);
+    } else {
+      console.log(err);
     }
-  );
+  });
 };
 
 const GetDriverUnAssignedVehicles = (req, res) => {
@@ -172,13 +169,17 @@ const DeleteVehicle = (req, res) => {
 const DeleteAssignedDriver = (req, res) => {
   const id = req.params.id;
   console.log(id);
-  pool.query("DELETE FROM ma_driver WHERE Driver_ID = ?", id, (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(result);
+  pool.query(
+    "DELETE FROM driver_assigned WHERE Asigned_ID = ?",
+    id,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
     }
-  });
+  );
 };
 
 const DeleteAssignedLocation = (req, res) => {
@@ -267,7 +268,7 @@ const Updatevehicle = (req, res) => {
 const GetLocation = (req, res) => {
   const vehicleno = req.params.vehicleno;
   pool.query(
-    "SELECT From_Date,To_Date FROM vehicle_location WHERE Vehicle_No = ?",
+    "SELECT Location_ID,From_Date,To_Date FROM vehicle_location WHERE Vehicle_No = ?",
     vehicleno,
     (err, result) => {
       if (err) {
@@ -312,11 +313,11 @@ const GetLocationalone = (req, res) => {
 };
 
 const GetDriverAssignedVehiclesAll = (req, res) => {
-  const vehicleno = req.params.vehicleno;
-  console.log(vehicleno);
+  const Asigned_ID = req.params.Asigned_ID;
+  console.log(Asigned_ID);
   pool.query(
-    "SELECT ma_driver.Full_Name,  vehicle_driver.Vehicle_No,  ma_vehicle_category.Category_Name, ma_location.Location_Name,  vehicle_location.From_Date,  vehicle_location.To_Date FROM vehicle_driver LEFT JOIN ma_driver ON vehicle_driver.Driver_ID = ma_driver.Driver_ID LEFT JOIN vehicle_location ON ma_driver.Driver_ID = vehicle_location.Driver_ID LEFT JOIN ma_location ON ma_driver.Location_ID = ma_location.Location_ID LEFT JOIN ma_vehicle_registry ON vehicle_location.Vehicle_No = ma_vehicle_registry.Vehicle_No LEFT JOIN ma_vehicle_category ON ma_vehicle_registry.Vehicle_Category_ID = ma_vehicle_category.Vehicle_Category_ID  HAVING Vehicle_No = ?",
-    vehicleno,
+    "SELECT * FROM `driver_assigned`  WHERE Asigned_ID = ?",
+    Asigned_ID,
     (err, rows) => {
       if (!err) {
         res.send(rows);
@@ -452,6 +453,19 @@ const UpdateStatus = (req, res) => {
   );
 };
 
+const GetTotalIdelVehiclesCountwise = (req, res) => {
+  pool.query(
+    "SELECT ma_vehicle_category.Category_Name, Count(ma_vehicle_registry.Vehicle_No) FROM ma_vehicle_registry INNER JOIN ma_vehicle_category ON ma_vehicle_registry.Vehicle_Category_ID = ma_vehicle_category.Vehicle_Category_ID INNER JOIN vehicle_transfer ON ma_vehicle_registry.Vehicle_No = vehicle_transfer.Vehicle_No WHERE vehicle_transfer.To_Date < CURDATE() GROUP BY ma_vehicle_category.Category_Name",
+    (err, rows) => {
+      if (!err) {
+        res.send(rows);
+      } else {
+        console.log(err);
+      }
+    }
+  );
+};
+
 exports.GetRegistedVehicles = GetRegistedVehicles;
 exports.GetLocationUnAssignedVehicles = GetLocationUnAssignedVehicles;
 exports.GetLocationAssignedVehicles = GetLocationAssignedVehicles;
@@ -488,3 +502,5 @@ exports.GetCompletedBookingRequest = GetCompletedBookingRequest;
 
 exports.UpdateStatus = UpdateStatus;
 exports.UpdateTranferedsummeryByaID = UpdateTranferedsummeryByaID;
+
+exports.GetTotalIdelVehiclesCountwise = GetTotalIdelVehiclesCountwise;

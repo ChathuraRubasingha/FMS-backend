@@ -48,7 +48,7 @@ router.put(
 router.get("/getlocationalone", Registory.GetLocationalone);
 
 router.get(
-  "/getdriverassignedvehiclesAll/:vehicleno",
+  "/getdriverassignedvehiclesAll/:Asigned_ID",
   Registory.GetDriverAssignedVehiclesAll
 );
 
@@ -75,4 +75,9 @@ router.put("/updatestatus/:id", Registory.UpdateStatus);
 router.put(
   "/updateTranferedsummeryByaID/:transfer_ID",
   Registory.UpdateTranferedsummeryByaID
+);
+
+router.get(
+  "/getTotalIdelVehiclesCountwise",
+  Registory.GetTotalIdelVehiclesCountwise
 );
