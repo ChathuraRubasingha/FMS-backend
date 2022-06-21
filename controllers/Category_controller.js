@@ -39,6 +39,21 @@ const UpdateCategory = (req, res) => {
 	);
 };
 
+const GetCategoryByID = (req, res) => {
+	const id = req.params.id;
+	pool.query(
+		"SELECT *FROM ma_vehicle_category WHERE Vehicle_Category_ID = ?",
+		id,
+		(err, result) => {
+			if (err) {
+				res.status(400).send(err);
+			} else {
+				res.send(result[0]);
+			}
+		}
+	);
+};
+
 // get data from database
 const GetCategory = (req, res) => {
 	pool.query(

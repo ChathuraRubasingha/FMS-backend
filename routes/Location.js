@@ -6,4 +6,6 @@ router.post("/addLocation", Location.AddLocation);
 router.get("/Location", Location.GetLocation);
 router.delete("/deleteLocation/:id", Location.DeleteById);
 
+router.get("/ViewLocation/:id", Location.ViewLocation);
+
 module.exports = router;

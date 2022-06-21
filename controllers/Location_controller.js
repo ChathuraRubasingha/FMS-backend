@@ -25,7 +25,7 @@ const AddLocation = (req, res) => {
 // get data from database
 const GetLocation = (req, res) => {
 	pool.query(
-		"SELECT  ma_location.Location_Name,    ma_location.Address   FROM   ma_location",
+		"SELECT  ma_location.Location_Name,Location_ID,    ma_location.Address   FROM   ma_location",
 		(err, rows) => {
 			if (!err) {
 				res.send(rows);
@@ -51,6 +51,25 @@ const DeleteById = (req, res) => {
 		}
 	);
 };
+
+const ViewLocation = (req, res) => {
+	const Location_ID = req.params.id;
+	console.log(Location_ID);
+	pool.query(
+		"SELECT	ma_location.Location_Name,Location_ID,add_by,add_date,edit_by,edit_date	FROM	ma_location WHERE ma_location.Location_ID = ?",
+		Location_ID,
+
+		(err, result) => {
+			if (err) {
+				res.status(400).send(err);
+			} else {
+				res.send(result[0]);
+			}
+		}
+	);
+};
+
+exports.ViewLocation = ViewLocation;
 
 exports.GetLocation = GetLocation;
 exports.AddLocation = AddLocation;
